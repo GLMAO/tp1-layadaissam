@@ -1,24 +1,28 @@
 package org.emp.gl.core.launcher;
 
-import org.emp.gl.clients.Horloge ;
+import org.emp.gl.clients.CompteARebours;
+import org.emp.gl.clients.Horloge;
+import org.emp.gl.time.service.impl.DummyTimeServiceImpl;
+import org.emp.gl.timer.service.TimerService;
 
-/**
- * Hello world!
- *
- */
+import javax.swing.*;
+
 public class App {
+    public static void main(String[] args) throws InterruptedException {
+        // Création du service temps
+        TimerService timer = new DummyTimeServiceImpl();
 
-    public static void main(String[] args) {
+        // Lancement des horloges et du compteur texte (console)
+        new Horloge("H1", timer);
+        new Horloge("H2", timer);
+        new CompteARebours("CR1", 5, timer);
 
-        testDuTimeService();
-    }
+        // Lancement de l’interface graphique BONUS
+        SwingUtilities.invokeLater(() -> {
+            new HorlogeGUI(); // Fenêtre graphique affichant l’heure
+        });
 
-    private static void testDuTimeService() {
-        Horloge horloge = new Horloge("Num 1") ;
-    }
-
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        // Empêche la terminaison du programme
+        Thread.sleep(Long.MAX_VALUE);
     }
 }
